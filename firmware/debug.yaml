@@ -3,6 +3,7 @@ packages:
 
 logger:
   level: DEBUG
+  hardware_uart: USB_SERIAL_JTAG
 
 debug:
   update_interval: 5s

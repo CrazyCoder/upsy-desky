@@ -13,14 +13,20 @@ esphome:
   project:
     name: tj_horner.upsy_desky
     version: "1.1.1"
+  platformio_options:
+    board_build.mcu: esp32c3
+    board_build.flash_mode: dio
 
 uart:
   id: handset_tx
-  tx_pin: 16
+  tx_pin: 21        # 16 (4) - TX
   baud_rate: 9600
 
 esp32:
-  board: esp32dev
+  board: esp32-c3-devkitm-1
+  variant: esp32c3
+  framework:
+    type: esp-idf
 
 # Configurable options
 substitutions:
@@ -30,27 +36,29 @@ substitutions:
   target_desk_height_name: "Target Desk Height"
 
   # Standing Desk Component Config
-  standing_desk_uart_rx_pin: "17"
-  standing_desk_up_pin: "21"
-  standing_desk_down_pin: "22"
+  standing_desk_uart_rx_pin: "20"     # 17 (2) - RX
+  standing_desk_up_pin: "4"           # 21 (7) - MOVE UP
+  standing_desk_down_pin: "5"         # 22 (8) - MVOE DOWN
   standing_desk_min_height: "25.2"
   standing_desk_max_height: "50.8"
 
   # Presets Addon Config
-  button_bit1_pin: "21"
-  button_bit2_pin: "22"
-  button_bit4_pin: "19"
-  button_m_pin: "18"
+  button_bit1_pin: "4"   # 21 (7)
+  button_bit2_pin: "5"   # 22 (8)
+  button_bit4_pin: "6"   # 19 (6) - MEMORY RECALL
+  button_m_pin: "3"      # 18 (1) - M Button
 
   # Runtime Config Defaults
   default_height_units: "in" # Must be "in" or "cm"
+
+  standing_desk_variant: "uplift"
 
 packages:
   standing_desk: github://tjhorner/esphome-standing-desk/configs/template.yaml
   addon_presets: !include addons/presets.yaml
   addon_stable_ids: !include addons/stable-ids.yaml
   addon_runtime_config: !include addons/runtime-config.yaml
-  addon_bluetooth_proxy: !include addons/bluetooth-proxy.yaml
+  # addon_bluetooth_proxy: !include addons/bluetooth-proxy.yaml
 
 button:
   - platform: restart
@@ -60,5 +68,7 @@ light:
   - platform: status_led
     id: upsy_desky_status_led
     name: "Status LED"
-    pin: GPIO23
+    pin:
+      number: GPIO8
+      inverted: true
     restore_mode: RESTORE_DEFAULT_ON
