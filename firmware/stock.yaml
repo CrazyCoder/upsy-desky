@@ -32,4 +32,4 @@ ota:
   password: ""
 
 dashboard_import:
-  package_import_url: github://tjhorner/upsy-desky/firmware/stock.yaml@v1.1.1
+  package_import_url: github://crazycoder/upsy-desky/firmware/stock.yaml@master
